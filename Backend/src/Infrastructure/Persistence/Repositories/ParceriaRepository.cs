@@ -14,7 +14,9 @@ public class ParceriaRepository
 
     public async Task<int> saveParceria(ParceriaRequestDto dto)
     {
-        string query = @"
+        try
+        {
+            string query = @"
             CALL insert_parceria(
                 @objetive,
                 @startDate,
@@ -26,17 +28,24 @@ public class ParceriaRepository
             );
         ";
 
-        await using NpgsqlConnection conn = _dbConnectionFactory.GetDbConnection();
-        await conn.OpenAsync();
+            await using NpgsqlConnection conn = _dbConnectionFactory.GetDbConnection();
+            await conn.OpenAsync();
 
-        using var cmd = new NpgsqlCommand(query);
-        cmd.Parameters.AddWithValue("objetive", dto.Objective);
-        cmd.Parameters.AddWithValue("startDate", dto.StartDate);
-        cmd.Parameters.AddWithValue("endDate", dto.EndDate);
-        cmd.Parameters.AddWithValue("professorId", dto.professorID);
-        cmd.Parameters.AddWithValue("parceiroNome", dto.parceiroName);
-        cmd.Parameters.AddWithValue("professorEmail", dto.parceiroEmail);
-        cmd.Parameters.AddWithValue("parceiroArea", dto.parceiroArea);
+            using var cmd = new NpgsqlCommand(query);
+            cmd.Parameters.AddWithValue("objetive", dto.Objective);
+            cmd.Parameters.AddWithValue("startDate", dto.StartDate);
+            cmd.Parameters.AddWithValue("endDate", dto.EndDate);
+            cmd.Parameters.AddWithValue("professorId", dto.professorID);
+            cmd.Parameters.AddWithValue("parceiroNome", dto.parceiroName);
+            cmd.Parameters.AddWithValue("professorEmail", dto.parceiroEmail);
+            cmd.Parameters.AddWithValue("parceiroArea", dto.parceiroArea);
 
+            using var reader = await cmd.ExecuteReaderAsync();
+            await reader.ReadAsync();
+        }
+        catch (NpgsqlException error)
+        {
+            throw new NpgsqlException("Erro ao cadastrar parceria: " + error.Message);
+        }
     }
 }

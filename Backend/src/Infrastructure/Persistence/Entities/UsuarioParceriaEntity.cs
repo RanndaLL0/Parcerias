@@ -7,7 +7,6 @@ public class UsuarioParceriaEntity
 
     public string Tipo { get; set; }
     public STATUS Status { get; set; }
-
     public UsuarioParceriaEntity Usuario { get; set; }
     public ParceriaEntity Parceria { get; set; }
 }
