@@ -1,0 +1,7 @@
+
+public enum USERROLE
+{
+    PROFESSOR,
+    COMITE,
+    ADMINISTRADOR
+}
