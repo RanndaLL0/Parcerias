@@ -12,11 +12,11 @@ public class ParceriaService
     public async void save(ParceriaRequestDto dto) {
         try
         {
-
+            _parceriaRepository.saveParceria(dto);
         }
         catch (NpgsqlException error)
         {
-            throw new NpgsqlException("Erro ao cadastrar parceria");
+            throw new NpgsqlException("Erro ao cadastrar parceria: " + error.Message);
         }
     }
 }
