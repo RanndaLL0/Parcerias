@@ -1,80 +1,102 @@
-import React, { useState } from "react";
+import React from "react";
 import loginImage from "../../utils/images/loginImage.png";
-import logo from "../../utils/images/logo.png"
-import { Eye,EyeClosed } from 'lucide-react';
+import logo from "../../utils/images/logo.png";
 import { useNavigate } from "react-router-dom";
 import CustomInput from "../../components/loginInputs";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  Email: yup.string().email("Formato inválido").required("Informe seu email"),
+  Password: yup.string().required("É preciso que você informe a senha"),
+}).required();
 
 export default function LoginPage() {
-    const [showPassword,setShowPassword] = useState(false);
-    const navigation = useNavigate();
+  const navigation = useNavigate();
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-    }
+  const { handleSubmit, control } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      Email: "",
+      Password: "",
+    },
+  });
 
-    return (
-        <main className="flex w-full h-screen">
-            <aside className="flex justify-center items-center flex-1 h-screen">
-                <form className="w-[460px]"
-                    onSubmit={handleLogin}>
-                    <header className="mb-8">
-                        <img src={logo} alt="Logo Senac" />
-                    </header>
+  const onSubmit = (data) => {
+    console.log("Login data:", data);
+  };
 
-                    <div className="flex flex-col gap-4">
-                        <h1 className="text-3xl font-medium">Bem vindo de volta!</h1>
-                        <h3 className="text-sm text-[#A1A1A1]">Coloque as suas credenciais para acessar a sua conta.</h3>
-                    </div>
+  return (
+    <main className="flex w-full h-screen">
+      <aside className="flex justify-center items-center flex-1 h-screen">
+        <form className="w-[460px]" onSubmit={handleSubmit(onSubmit)}>
+          <header className="mb-8">
+            <img src={logo} alt="Logo Senac" />
+          </header>
 
-                    <CustomInput
-                        text="Entre com o seu email"
-                        placeholder="E-mail"
-                        
-                    />
+          <div className="flex flex-col gap-4">
+            <h1 className="text-3xl font-medium">Bem vindo de volta!</h1>
+            <h3 className="text-sm text-[#A1A1A1]">
+              Coloque as suas credenciais para acessar a sua conta.
+            </h3>
+          </div>
 
-                    <div className="flex flex-col gap-2.5 mt-6">
-                        <h3 className="text-sm text-[#A1A1A1]">Insira a sua senha</h3>
-                        <div className="relative">
-                            <input
-                                className="w-full bg-none border-1 border-[#E2E2E2]
-                                bg-white py-2.5 px-3.5 rounded-sm pr-12"
-                                type={showPassword ? "text" : "password"}
-                                placeholder="*****" />
-                            <button 
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-0 top-1/2 border-x-1 
-                            border-[#E2E2E2] bg-white p-2 -translate-y-1/2 cursor-pointer">
-                            {
-                                showPassword ?
-                                <Eye color="#E2E2E2" height={26} width={26} />
-                                :
-                                <EyeClosed color="#E2E2E2" height={26} width={26}/>
-                            }
-                            </button>
-                        </div>
-                    </div>
+          <Controller
+            name="Email"
+            control={control}
+            render={({ field, fieldState }) => (
+              <CustomInput
+                text="Entre com o seu email"
+                placeholder="E-mail"
+                value={field.value}            
+                action={field.onChange}        
+                error={fieldState.error?.message}
+              />
+            )}
+          />
 
-                    <button className="w-full py-2 text-white 
-                    bg-[#0064FF] mt-6 cursor-pointer">Login</button>
+          <Controller
+            name="Password"
+            control={control}
+            render={({ field, fieldState }) => (
+              <CustomInput
+                text="Entre com a sua senha"
+                placeholder="******"
+                type="password"
+                value={field.value}            
+                action={field.onChange}        
+                error={fieldState.error?.message}
+              />
+            )}
+          />
 
-                    <button onClick={() => navigation("/register")}
-                    className="mt-9">
-                        <span className="mt-9 cursor-pointer">
-                            Não tem uma conta? <a className="text-[#0064FF]">Registrar</a>
-                        </span>
-                    </button>
+          <input
+            type="submit"
+            value="Login"
+            className="w-full py-2 text-white bg-[#0064FF] mt-6 cursor-pointer"
+          />
 
-                </form>
-            </aside>
-            <aside className="sm:hidden md:block bg-white w-1/2 p-6">
-                <img
-                    src={loginImage}
-                    alt="Login"
-                    className="w-full h-full rounded-lg object-fill"
-                />
-            </aside>
-        </main>
-    )
+          <button
+            type="button"
+            onClick={() => navigation("/register")}
+            className="mt-9"
+          >
+            <span className="mt-9 cursor-pointer">
+              Não tem uma conta?{" "}
+              <a className="text-[#0064FF]">Registrar</a>
+            </span>
+          </button>
+        </form>
+      </aside>
+
+      <aside className="sm:hidden md:block bg-white w-1/2 p-6">
+        <img
+          src={loginImage}
+          alt="Login"
+          className="w-full h-full rounded-lg object-fill"
+        />
+      </aside>
+    </main>
+  );
 }

@@ -32,3 +32,7 @@ C:\Users\cit\Desktop\projects\Parcerias\Backend\obj\Debug\net9.0\Backend.pdb
 C:\Users\cit\Desktop\projects\Parcerias\Backend\obj\Debug\net9.0\Backend.genruntimeconfig.cache
 C:\Users\cit\Desktop\projects\Parcerias\Backend\obj\Debug\net9.0\ref\Backend.dll
 C:\Users\cit\Desktop\projects\Parcerias\Backend\obj\Debug\net9.0\Backend.sourcelink.json
+C:\Users\cit\Desktop\projects\Parcerias\Backend\bin\Debug\net9.0\package-lock.json
+C:\Users\cit\Desktop\projects\Parcerias\Backend\bin\Debug\net9.0\package.json
+C:\Users\cit\Desktop\projects\Parcerias\Backend\bin\Debug\net9.0\src\WebUI\Views\package-lock.json
+C:\Users\cit\Desktop\projects\Parcerias\Backend\bin\Debug\net9.0\src\WebUI\Views\package.json
